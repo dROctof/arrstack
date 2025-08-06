@@ -182,3 +182,16 @@ services:
       - ${ARRPATH}Audiobookshelf/metadata:/metadata
       - ${ARRPATH}Audiobookshelf/media:/audiobooks   # where your audiobooks/ebooks are
     restart: unless-stopped                                                                                        
+
+
+
+  filebrowser:
+    image: filebrowser/filebrowser:latest
+    container_name: filebrowser
+    user: "1000:1000"              # host UID:GID (check with `id` command)
+    volumes:
+      - ${ARRPATH}Audiobookshelf/media:/srv        # same media folder as ABS
+      - ${ARRPATH}FileBrowser/config:/config       # filebrowser’s own config
+    ports:
+      - 8085:80                     # File Browser web UI port
+    restart: unless-stopped

@@ -160,57 +160,26 @@ services:
 
 
 
+#  /$$   /$$  /$$$$$$  /$$    /$$ /$$$$$$ /$$$$$$$$ /$$$$$$ 
+# | $$  /$$/ /$$__  $$| $$   | $$|_  $$_/|__  $$__//$$__  $$
+# | $$ /$$/ | $$  \ $$| $$   | $$  | $$     | $$  | $$  \ $$
+# | $$$$$/  | $$$$$$$$|  $$ / $$/  | $$     | $$  | $$$$$$$$
+# | $$  $$  | $$__  $$ \  $$ $$/   | $$     | $$  | $$__  $$
+# | $$\  $$ | $$  | $$  \  $$$/    | $$     | $$  | $$  | $$
+# | $$ \  $$| $$  | $$   \  $/    /$$$$$$   | $$  | $$  | $$
+# |__/  \__/|__/  |__/    \_/    |______/   |__/  |__/  |__/
 
-# ██████╗ ███████╗ █████╗ ██████╗  █████╗ ██████╗ ██████╗ 
-# ██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔══██╗
-# ██████╔╝█████╗  ███████║██████╔╝███████║██║  ██║██████╔╝
-# ██╔═══╝ ██╔══╝  ██╔══██║██╔═══╝ ██╔══██║██║  ██║██╔═══╝ 
-# ██║     ███████╗██║  ██║██║     ██║  ██║██████╔╝██║     
-# ╚═╝     ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚═════╝ ╚═╝     
 
-lazylibrarian:
-  image: lscr.io/linuxserver/lazylibrarian:latest
-  container_name: lazylibrarian
-  hostname: lazylibrarian
-  volumes:
-    - ${ARRPATH}LazyLibrarian/config:/config
-    - ${ARRPATH}LazyLibrarian/books:/books
-    - ${ARRPATH}Downloads:/downloads
-  ports:
-    - 5299:5299
-  restart: unless-stopped
-  env_file:
-    - '.env'
-
-#  ██████╗ █████╗ ██╗     ██╗██████╗ ███████╗██████╗ ███████╗    ██╗    ██╗███████╗██████╗ 
-# ██╔════╝██╔══██╗██║     ██║██╔══██╗██╔════╝██╔══██╗██╔════╝    ██║    ██║██╔════╝██╔══██╗
-# ██║     ███████║██║     ██║██║  ██║█████╗  ██████╔╝███████╗    ██║ █╗ ██║█████╗  ██████╔╝
-# ██║     ██╔══██║██║     ██║██║  ██║██╔══╝  ██╔═══╝ ╚════██║    ██║███╗██║██╔══╝  ██╔═══╝ 
-# ╚██████╗██║  ██║███████╗██║██████╔╝███████╗██║     ███████║    ╚███╔███╔╝███████╗██║     
-#  ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝╚═════╝ ╚══════╝╚═╝     ╚══════╝     ╚══╝╚══╝ ╚══════╝╚═╝     
-
-calibre:
-  image: lscr.io/linuxserver/calibre:latest
-  container_name: calibre
-  hostname: calibre
-  volumes:
-    - ${ARRPATH}Calibre/config:/config
-    - ${ARRPATH}LazyLibrarian/books:/books
-  ports:
-    - 8081:8081
-  restart: unless-stopped
-  env_file:
-    - '.env'
-
-calibre-web:
-  image: lscr.io/linuxserver/calibre-web:latest
-  container_name: calibre-web
-  hostname: calibre-web
-  volumes:
-    - ${ARRPATH}LazyLibrarian/books:/books
-    - ${ARRPATH}Calibre-Web/config:/config
-  ports:
-    - 8083:8083
-  restart: unless-stopped
-  env_file:
-    - '.env'
+  kavita:
+    image: kizaing/kavita:latest
+    container_name: kavita
+    hostname: kavita
+    ports:
+      - 5000:5000
+    volumes:
+      - ${ARRPATH}Kavita/config:/kavita/config
+      - ${ARRPATH}Kavita/books:/kavita/library
+    restart: unless-stopped
+    env_file:
+      - '.env'
+                                                          

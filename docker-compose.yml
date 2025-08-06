@@ -168,19 +168,19 @@ services:
 # ██║     ███████╗██║  ██║██║     ██║  ██║██████╔╝██║     
 # ╚═╝     ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚═════╝ ╚═╝     
 
-  readarr:
-    image: linuxserver/readarr:develop
-    container_name: readarr
-    hostname: readarr
-    volumes:
-      - ${ARRPATH}Readarr/config:/config
-      - ${ARRPATH}Readarr/books:/data/books
-      - ${ARRPATH}Downloads:/downloads
-    ports:
-      - 8787:8787
-    restart: unless-stopped
-    env_file:
-      - '.env'
+lazylibrarian:
+  image: lscr.io/linuxserver/lazylibrarian:latest
+  container_name: lazylibrarian
+  hostname: lazylibrarian
+  volumes:
+    - ${ARRPATH}LazyLibrarian/config:/config
+    - ${ARRPATH}LazyLibrarian/books:/books
+    - ${ARRPATH}Downloads:/downloads
+  ports:
+    - 5299:5299
+  restart: unless-stopped
+  env_file:
+    - '.env'
 
 #  ██████╗ █████╗ ██╗     ██╗██████╗ ███████╗██████╗ ███████╗    ██╗    ██╗███████╗██████╗ 
 # ██╔════╝██╔══██╗██║     ██║██╔══██╗██╔════╝██╔══██╗██╔════╝    ██║    ██║██╔════╝██╔══██╗
@@ -189,15 +189,28 @@ services:
 # ╚██████╗██║  ██║███████╗██║██████╔╝███████╗██║     ███████║    ╚███╔███╔╝███████╗██║     
 #  ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝╚═════╝ ╚══════╝╚═╝     ╚══════╝     ╚══╝╚══╝ ╚══════╝╚═╝     
 
-  calibre-web:
-    image: linuxserver/calibre-web
-    container_name: calibre-web
-    hostname: calibre-web
-    volumes:
-      - ${ARRPATH}Readarr/books:/books
-      - ${ARRPATH}Calibre-Web/config:/config
-    ports:
-      - 8083:8083
-    restart: unless-stopped
-    env_file:
-      - '.env'
+calibre:
+  image: lscr.io/linuxserver/calibre:latest
+  container_name: calibre
+  hostname: calibre
+  volumes:
+    - ${ARRPATH}Calibre/config:/config
+    - ${ARRPATH}LazyLibrarian/books:/books
+  ports:
+    - 8081:8081
+  restart: unless-stopped
+  env_file:
+    - '.env'
+
+calibre-web:
+  image: lscr.io/linuxserver/calibre-web:latest
+  container_name: calibre-web
+  hostname: calibre-web
+  volumes:
+    - ${ARRPATH}LazyLibrarian/books:/books
+    - ${ARRPATH}Calibre-Web/config:/config
+  ports:
+    - 8083:8083
+  restart: unless-stopped
+  env_file:
+    - '.env'

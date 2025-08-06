@@ -160,49 +160,25 @@ services:
 
 
 
-#  /$$   /$$  /$$$$$$  /$$    /$$ /$$$$$$ /$$$$$$$$ /$$$$$$ 
-# | $$  /$$/ /$$__  $$| $$   | $$|_  $$_/|__  $$__//$$__  $$
-# | $$ /$$/ | $$  \ $$| $$   | $$  | $$     | $$  | $$  \ $$
-# | $$$$$/  | $$$$$$$$|  $$ / $$/  | $$     | $$  | $$$$$$$$
-# | $$  $$  | $$__  $$ \  $$ $$/   | $$     | $$  | $$__  $$
-# | $$\  $$ | $$  | $$  \  $$$/    | $$     | $$  | $$  | $$
-# | $$ \  $$| $$  | $$   \  $/    /$$$$$$   | $$  | $$  | $$
-# |__/  \__/|__/  |__/    \_/    |______/   |__/  |__/  |__/
 
 
-  kavita:
-    image: kizaing/kavita:latest
-    container_name: kavita
-    hostname: kavita
+ #     ___      __    __   _______   __    ______   .______     ______     ______    __  ___      _______. __    __   _______  __       _______ 
+ #    /   \    |  |  |  | |       \ |  |  /  __  \  |   _  \   /  __  \   /  __  \  |  |/  /     /       ||  |  |  | |   ____||  |     |   ____|
+ #   /  ^  \   |  |  |  | |  .--.  ||  | |  |  |  | |  |_)  | |  |  |  | |  |  |  | |  '  /     |   (----`|  |__|  | |  |__   |  |     |  |__   
+ #  /  /_\  \  |  |  |  | |  |  |  ||  | |  |  |  | |   _  <  |  |  |  | |  |  |  | |    <       \   \    |   __   | |   __|  |  |     |   __|  
+ # /  _____  \ |  `--'  | |  '--'  ||  | |  `--'  | |  |_)  | |  `--'  | |  `--'  | |  .  \  .----)   |   |  |  |  | |  |____ |  `----.|  |     
+# /__/     \__\ \______/  |_______/ |__|  \______/  |______/   \______/   \______/  |__|\__\ |_______/    |__|  |__| |_______||_______||__|     
+                                                                                                                                              
+
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    container_name: audiobookshelf
     ports:
-      - 5000:5000
+      - 13378:80          # Web UI on port 13378
+    environment:
+      - TZ=Etc/UTC        # Set to your timezone, e.g. Europe/London
     volumes:
-      - ${ARRPATH}Kavita/config:/kavita/config
-      - ${ARRPATH}Kavita/books:/kavita/library
-    restart: unless-stopped
-    env_file:
-      - '.env'
-
-
-
-#           /$$$$$$$$ /$$$$$$ /$$       /$$$$$$$$       /$$$$$$$  /$$$$$$$   /$$$$$$  /$$      /$$  /$$$$$$  /$$$$$$$$ /$$$$$$$ 
-# | $$_____/|_  $$_/| $$      | $$_____/      | $$__  $$| $$__  $$ /$$__  $$| $$  /$ | $$ /$$__  $$| $$_____/| $$__  $$
-# | $$        | $$  | $$      | $$            | $$  \ $$| $$  \ $$| $$  \ $$| $$ /$$$| $$| $$  \__/| $$      | $$  \ $$
-# | $$$$$     | $$  | $$      | $$$$$         | $$$$$$$ | $$$$$$$/| $$  | $$| $$/$$ $$ $$|  $$$$$$ | $$$$$   | $$$$$$$/
-# | $$__/     | $$  | $$      | $$__/         | $$__  $$| $$__  $$| $$  | $$| $$$$_  $$$$ \____  $$| $$__/   | $$__  $$
-# | $$        | $$  | $$      | $$            | $$  \ $$| $$  \ $$| $$  | $$| $$$/ \  $$$ /$$  \ $$| $$      | $$  \ $$
-# | $$       /$$$$$$| $$$$$$$$| $$$$$$$$      | $$$$$$$/| $$  | $$|  $$$$$$/| $$/   \  $$|  $$$$$$/| $$$$$$$$| $$  | $$
-# |__/      |______/|________/|________/      |_______/ |__/  |__/ \______/ |__/     \__/ \______/ |________/|__/  |__/
-                                                                                                                     
-  filebrowser:
-    image: filebrowser/filebrowser:latest
-    container_name: filebrowser
-    user: "1000:1000"             # match your host UID:GID (jellyfinuser probably 1000:1000)
-    volumes:
-      - ${ARRPATH}Kavita/library:/srv     # SAME library as Kavita
-      - ${ARRPATH}FileBrowser/config:/config
-    ports:
-      - 8085:80                           # expose FileBrowser on port 8085
-    restart: unless-stopped
-                                                                                                                     
-                                                                                                                                                                     
+      - ${ARRPATH}Audiobookshelf/config:/config
+      - ${ARRPATH}Audiobookshelf/metadata:/metadata
+      - ${ARRPATH}Audiobookshelf/media:/audiobooks   # where your audiobooks/ebooks are
+    restart: unless-stopped                                                                                        
